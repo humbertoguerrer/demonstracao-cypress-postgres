@@ -1,0 +1,17 @@
+{
+  "name": "demonstracao-cypress-sql",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "cy-open": "cypress open",
+    "run-test": "cypress run"
+  },
+  "keywords": [],
+  "author": "Humberto Guerrer Neto",
+  "license": "ISC",
+  "dependencies": {
+    "cypress": "^13.7.1",
+    "pg": "^8.11.3"
+  }
+}

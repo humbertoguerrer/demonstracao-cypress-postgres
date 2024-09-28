@@ -1,0 +1,39 @@
+version: '3'
+services:
+  postgres-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: jogadores
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - cypress-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      retries: 5
+
+  cypress:
+    build:
+      context: .
+    depends_on:
+      postgres-db:
+        condition: service_healthy
+    networks:
+      - cypress-network
+    volumes:
+      - ./cypress:/app/cypress
+      - ./package.json:/app/package.json
+      - ./cypress.config.js:/app/cypress.config.js
+    command: ["npx", "cypress", "run"]
+
+volumes:
+  postgres-data:
+
+networks:
+  cypress-network:
